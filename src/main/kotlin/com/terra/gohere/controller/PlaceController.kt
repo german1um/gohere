@@ -2,6 +2,7 @@ package com.terra.gohere.controller
 
 import com.terra.gohere.dto.Category
 import com.terra.gohere.dto.PlaceDto
+import com.terra.gohere.dto.PlaceSaveDto
 import com.terra.gohere.model.Place
 import com.terra.gohere.service.PlaceService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +20,8 @@ class PlaceController (
     }
 
     @PostMapping
-    fun save(@RequestBody place: Place) {
-        placeService.save(place)
+    fun save(@RequestBody placeSaveDto: PlaceSaveDto) {
+        placeService.save(Place(placeSaveDto))
     }
 
     @GetMapping("/{id}")
