@@ -22,4 +22,5 @@ interface AviasalesApiService {
             @Query("sorting") sorting: String = "price"
             ): Call<PriceApiResponse>
 
+
 }

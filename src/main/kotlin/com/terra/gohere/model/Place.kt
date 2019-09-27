@@ -8,5 +8,7 @@ data class Place(
         val id: String = UUID.randomUUID().toString(),
         val name: String,
         val description: String,
-        val video: String
+        val airport: String,
+        val video: String,
+        val category: String
 )

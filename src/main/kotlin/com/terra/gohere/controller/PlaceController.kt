@@ -2,26 +2,25 @@ package com.terra.gohere.controller
 
 import com.terra.gohere.dto.Category
 import com.terra.gohere.dto.PlaceDto
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.terra.gohere.model.Place
+import com.terra.gohere.service.PlaceService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/places")
-class PlaceController {
+class PlaceController (
+        @Autowired val placeService: PlaceService
+){
 
     @GetMapping
     fun places(): List<Category> {
-        return listOf<Category>(
-                Category(),
-                Category(),
-                Category(),
-                Category(),
-                Category(),
-                Category(),
-                Category()
-                )
+        return placeService.getAllPlaces()
+    }
+
+    @PostMapping
+    fun save(@RequestBody place: Place) {
+        placeService.save(place)
     }
 
     @GetMapping("/{id}")
