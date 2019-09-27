@@ -16,8 +16,12 @@ class PlaceController {
         return listOf<Category>(
                 Category(),
                 Category(),
+                Category(),
+                Category(),
+                Category(),
+                Category(),
                 Category()
-        )
+                )
     }
 
     @GetMapping("/{id}")
