@@ -12,6 +12,11 @@ internal class AviasalesApiTest {
     @Autowired lateinit var aviasalesApi: AviasalesApi
     @Test
     fun getPrices() {
-        assert(aviasalesApi.getPrices("TYO").data.isNotEmpty())
+        assert(aviasalesApi.getPrices("LED","TYO").isNotEmpty())
+    }
+
+    @Test
+    fun getPricesFail() {
+        aviasalesApi.getPrices("LED","GGG").isNotEmpty()
     }
 }

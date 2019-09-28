@@ -24,11 +24,12 @@ class PlaceService (
         return weatherApi.getWeatherByCity(city).main.temp - 273.15
     }
 
-    fun getPrice(destination: String): Double{
-        return aviasalesApi.getPrices(destination).data.first().value
+    fun getPrice(origin: String, destination: String): Double{
+        return aviasalesApi.getPrices(origin, destination).first().value
     }
 
-    fun getAllPlaces(): List<Category> {
+    fun getAllPlaces(remoteAddr: String): List<Category> {
+        val origin = getUserIATA(remoteAddr)
         return placeRepository.findAll().groupBy {
             it.category
         }.map {
@@ -37,12 +38,16 @@ class PlaceService (
                     places = it.value.map { place ->
                         PlaceDto(
                                 place,
-                                getPrice(place.airport),
+                                getPrice(origin, place.airport),
                                 getWeatherByCity(place.name)
                         )
                     }
             )
         }
+    }
+
+    private fun getUserIATA(ip: String): String {
+        return aviasalesApi.whereAmI(ip).iata
     }
 
     fun save(place: Place) {

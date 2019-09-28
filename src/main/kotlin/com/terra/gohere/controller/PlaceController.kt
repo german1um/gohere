@@ -7,6 +7,7 @@ import com.terra.gohere.model.Place
 import com.terra.gohere.service.PlaceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/places")
@@ -15,8 +16,8 @@ class PlaceController (
 ){
 
     @GetMapping
-    fun places(): List<Category> {
-        return placeService.getAllPlaces()
+    fun places(request: HttpServletRequest): List<Category> {
+        return placeService.getAllPlaces(request.remoteAddr)
     }
 
     @PostMapping

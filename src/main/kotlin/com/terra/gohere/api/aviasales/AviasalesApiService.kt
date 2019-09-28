@@ -1,6 +1,7 @@
 package com.terra.gohere.api.aviasales
 
 import com.terra.gohere.api.aviasales.entity.PriceApiResponse
+import com.terra.gohere.api.aviasales.entity.UserIATA
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import retrofit2.Call
@@ -22,5 +23,12 @@ interface AviasalesApiService {
             @Query("sorting") sorting: String = "price"
             ): Call<PriceApiResponse>
 
+    @GET("whereami")
+    fun whereAmI(
+            @Header("X-Access-Token") auth: String,
+            @Query("locale") locale: String = "en",
+            @Query("callback") callback: String = "useriata",
+            @Query("ip") ip: String
+            ): Call<UserIATA>
 
 }
