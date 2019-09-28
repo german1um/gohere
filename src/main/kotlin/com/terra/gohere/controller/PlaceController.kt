@@ -24,7 +24,7 @@ class PlaceController (
         placeService.save(Place(placeSaveDto))
     }
 
-    @PostMapping
+    @DeleteMapping()
     fun dropPlaces() {
         placeService.dropPlaces()
     }
