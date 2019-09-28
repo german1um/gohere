@@ -29,9 +29,19 @@ class PlaceController (
         placeService.dropPlaces()
     }
 
-    @PostMapping("/{id}")
-    fun update(@PathVariable("id") id: String, @RequestBody placeSaveDto: PlaceSaveDto) {
+    @PutMapping("/{id}")
+    fun put(@PathVariable("id") id: String, @RequestBody placeSaveDto: PlaceSaveDto) {
         placeService.save(Place(id, placeSaveDto))
+    }
+
+    @PatchMapping("/{id}")
+    fun patch(@PathVariable("id") id: String,
+              @RequestParam video: String,
+              @RequestParam image: String
+              ) {
+        placeService.patch(
+                id, video, image
+        )
     }
 
 }

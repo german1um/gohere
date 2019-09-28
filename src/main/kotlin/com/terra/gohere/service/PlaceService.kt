@@ -56,8 +56,7 @@ class PlaceService(
 
     fun getFlight(origin: String, destination: String, month: String): Flight {
         return aviasalesLyssaApi.getCheapestPricesForMonth(origin, destination, month)
-                .minBy { it.value }?:
-        throw ResponseStatusException(
+                .minBy { it.value } ?: throw ResponseStatusException(
                 HttpStatus.I_AM_A_TEAPOT,
                 "method getFlight origin = $origin, destination = $destination month = $month"
         )
@@ -87,6 +86,26 @@ class PlaceService(
 
     fun save(place: Place) {
         placeRepository.save(place)
+    }
+
+    fun patch(id: String,
+              video: String,
+              image: String) {
+        val place: Place = placeRepository.findById(id).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND, "Place with such id not found")
+        }
+        placeRepository.save(
+                Place(
+                        id = place.id,
+                        name = place.name,
+                        description = place.description,
+                        airport = place.airport,
+                        video = video,
+                        image = image,
+                        category = place.category,
+                        bestSeasons = place.bestSeasons
+                        )
+        )
     }
 
     fun dropPlaces() {
