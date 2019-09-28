@@ -21,7 +21,7 @@ class PlaceService (
     }
 
     fun getWeatherByCity(city: String): Double{
-        return weatherApi.getWeatherByCity(city).main.temp - 273.15
+        return weatherApi.getWeatherByCity(city) - 273.15
     }
 
     fun getPrice(origin: String, destination: String): Double{
