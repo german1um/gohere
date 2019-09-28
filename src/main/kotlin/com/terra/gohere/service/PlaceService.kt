@@ -1,6 +1,7 @@
 package com.terra.gohere.service
 
 import com.terra.gohere.api.aviasales.AviasalesApi
+import com.terra.gohere.api.aviasales.AviasalesAutocompleteApi
 import com.terra.gohere.api.aviasales.AviasalesLyssaApi
 import com.terra.gohere.api.aviasales.entity.Flight
 import com.terra.gohere.api.openweather.OpenWeatherApi
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDate.now
 import java.time.Month
@@ -22,6 +22,7 @@ class PlaceService(
         @Autowired val placeRepository: PlaceRepository,
         @Autowired val aviasalesApi: AviasalesApi,
         @Autowired val aviasalesLyssaApi: AviasalesLyssaApi,
+        @Autowired val aviasalesAutocompleteApi: AviasalesAutocompleteApi,
         @Autowired val weatherApi: OpenWeatherApi
 ) {
 
@@ -29,7 +30,8 @@ class PlaceService(
         return weatherApi.getWeatherByCoordinates(lat, lng).main.temp - 273.15
     }
 
-    fun getWeatherByCity(city: String): Double {
+    fun getWeatherByCity(iata: String): Double {
+        val city = aviasalesAutocompleteApi.cityName(iata)
         return weatherApi.getWeatherByCity(city) - 273.15
     }
 
@@ -72,8 +74,8 @@ class PlaceService(
                     places = it.value.map { place ->
                         PlaceDto(
                                 place,
-                                getFlight(origin, place.airport, getSoonestHotMonth(place.bestSeasons)),
-                                getWeatherByCity(place.name)
+                                getFlight(origin, place.iata, getSoonestHotMonth(place.bestSeasons)),
+                                getWeatherByCity(place.iata)
                         )
                     }
             )
@@ -99,7 +101,7 @@ class PlaceService(
                         id = place.id,
                         name = place.name,
                         description = place.description,
-                        airport = place.airport,
+                        iata = place.iata,
                         video = video,
                         image = image,
                         category = place.category,

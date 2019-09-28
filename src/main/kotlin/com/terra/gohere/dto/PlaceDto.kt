@@ -19,7 +19,7 @@ data class PlaceDto(
             id = place.id,
             name = place.name,
             description = place.description,
-            airport = place.airport,
+            airport = place.iata,
             flightLink = flight.toString(),
             date = flight.depart_date,
             price = flight.value,
