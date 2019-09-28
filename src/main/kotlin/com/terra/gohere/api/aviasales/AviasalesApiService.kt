@@ -22,7 +22,7 @@ interface AviasalesApiService {
             @Query("sorting") sorting: String = "price"
             ): Call<LatestPriceApiResponse>
 
-    @GET("v2/prices/latest")
+    @GET("v1/prices/monthly")
     fun cheapestPrices(
             @Header("X-Access-Token") auth: String,
             @Query("currency") currency: String = "usd",

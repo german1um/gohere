@@ -25,6 +25,11 @@ class PlaceController (
         placeService.save(Place(placeSaveDto))
     }
 
+    @PostMapping("/{id}")
+    fun update(@PathVariable("id") id: String, @RequestBody placeSaveDto: PlaceSaveDto) {
+        placeService.save(Place(id, placeSaveDto))
+    }
+
     @GetMapping("/{id}")
     fun place(@PathVariable("id") id: String): PlaceDto {
         return PlaceDto(
