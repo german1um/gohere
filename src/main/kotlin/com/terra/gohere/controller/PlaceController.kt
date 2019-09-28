@@ -1,7 +1,6 @@
 package com.terra.gohere.controller
 
 import com.terra.gohere.dto.Category
-import com.terra.gohere.dto.PlaceDto
 import com.terra.gohere.dto.PlaceSaveDto
 import com.terra.gohere.model.Place
 import com.terra.gohere.service.PlaceService
@@ -23,6 +22,11 @@ class PlaceController (
     @PostMapping
     fun save(@RequestBody placeSaveDto: PlaceSaveDto) {
         placeService.save(Place(placeSaveDto))
+    }
+
+    @PostMapping
+    fun dropPlaces() {
+        placeService.dropPlaces()
     }
 
     @PostMapping("/{id}")

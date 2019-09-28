@@ -89,4 +89,8 @@ class PlaceService(
         placeRepository.save(place)
     }
 
+    fun dropPlaces() {
+        placeRepository.deleteAll()
+    }
+
 }
