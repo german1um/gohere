@@ -1,5 +1,6 @@
 package com.terra.gohere.dto
 
+import java.time.Month
 import java.util.*
 
 data class PlaceSaveDto (
@@ -8,5 +9,6 @@ data class PlaceSaveDto (
         val airport: String,
         val video: String,
         val image: String,
-        val category: String
+        val category: String,
+        val bestSeasons: List<Month>
 )

@@ -12,6 +12,6 @@ internal class PlaceServiceTest (@Autowired val placeService: PlaceService) {
 
     @Test
     fun getPrices() {
-        assert(placeService.getPrice("TYO") > 0)
+        assert(placeService.getFlight("LED","TYO","2019-11-01").value > 0)
     }
 }

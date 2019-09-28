@@ -49,7 +49,7 @@ class AviasalesApi (
             throw ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "token = $token origin = $origin destination = $destination.\n" + apiResponse.error)
         }
-        return apiResponse.data.values
+        return apiResponse.data
     }
 
     fun whereAmI(ip: String): UserIATA {

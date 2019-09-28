@@ -1,6 +1,7 @@
 package com.terra.gohere.api.aviasales
 
 import com.terra.gohere.api.aviasales.entity.CheapestPriceApiResponse
+import com.terra.gohere.api.aviasales.entity.CheapestPriceApiResponseForMonth
 import com.terra.gohere.api.aviasales.entity.LatestPriceApiResponse
 import com.terra.gohere.api.aviasales.entity.UserIATA
 import retrofit2.Call

@@ -2,6 +2,7 @@ package com.terra.gohere.model
 
 import com.terra.gohere.dto.PlaceSaveDto
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.Month
 import java.util.*
 
 @Document
@@ -12,7 +13,8 @@ data class Place(
         val airport: String,
         val video: String,
         val image: String = "image",
-        val category: String
+        val category: String,
+        val bestSeasons: List<Month> = listOf(Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER)
 ) {
     constructor(placeSaveDto: PlaceSaveDto): this(
             name = placeSaveDto.name,
@@ -20,7 +22,8 @@ data class Place(
             airport = placeSaveDto.airport,
             video = placeSaveDto.video,
             image = placeSaveDto.image,
-            category = placeSaveDto.category
+            category = placeSaveDto.category,
+            bestSeasons = placeSaveDto.bestSeasons
     )
 
     constructor(id: String, placeSaveDto: PlaceSaveDto) : this(
@@ -30,6 +33,7 @@ data class Place(
             airport = placeSaveDto.airport,
             video = placeSaveDto.video,
             image = placeSaveDto.image,
-            category = placeSaveDto.category
+            category = placeSaveDto.category,
+            bestSeasons = placeSaveDto.bestSeasons
     )
 }

@@ -30,19 +30,4 @@ class PlaceController (
         placeService.save(Place(id, placeSaveDto))
     }
 
-    @GetMapping("/{id}")
-    fun place(@PathVariable("id") id: String): PlaceDto {
-        return PlaceDto(
-                "-1",
-                "Tokyo",
-                "Best city",
-                "TYO",
-                100.0,
-                "https://youtu.be/6qGiXY1SB68",
-                "image",
-                28.0
-        )
-
-    }
-
 }
