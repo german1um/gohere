@@ -1,6 +1,8 @@
 package com.terra.gohere.api.openweather
 
+import com.terra.gohere.api.aviasales.AviasalesApi
 import com.terra.gohere.api.openweather.entity.WeatherApiResponse
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
@@ -15,6 +17,8 @@ class OpenWeatherApi (
         val env: Environment
 
 ){
+
+    private val logger = LoggerFactory.getLogger(AviasalesApi::class.java)
 
     private var token: String = env.getProperty("openweather_token")?:""
 
@@ -40,13 +44,17 @@ class OpenWeatherApi (
         return response.body()?: throw Exception("запрос не прошел почему-то")
     }
 
-    fun getWeatherByCity(city: String): WeatherApiResponse {
+    fun getWeatherByCity(city: String): Double {
         val response = api.weatherByCityName(
                 token = token,
                 city = city
         ).execute()
 
-        return response.body()?: throw Exception("запрос не прошел почему-то")
+        if(response.body() == null) {
+            logger.info("token = $token city = $city")
+        }
+
+        return response.body()?.main?.temp?:273.15
     }
 
 }
