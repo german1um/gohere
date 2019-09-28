@@ -74,8 +74,8 @@ class PlaceService(
                     places = it.value.map { place ->
                         PlaceDto(
                                 place,
-                                getFlight(origin, place.iata, getSoonestHotMonth(place.bestSeasons)),
-                                getWeatherByCity(place.iata)
+                                getFlight(origin, place.airport, getSoonestHotMonth(place.bestSeasons)),
+                                getWeatherByCity(place.airport)
                         )
                     }
             )
@@ -101,7 +101,7 @@ class PlaceService(
                         id = place.id,
                         name = place.name,
                         description = place.description,
-                        iata = place.iata,
+                        airport = place.airport,
                         video = video,
                         image = image,
                         category = place.category,
