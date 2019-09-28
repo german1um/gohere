@@ -42,7 +42,7 @@ class AviasalesApi (
                 destination = destination
         ).execute()
 
-        val apiResponse = response.body() ?: throw Exception("запрос не прошел почему-то")
+        val apiResponse = response.body() ?: throw Exception("origin = $origin destination = $destination. Запрос не прошел почему-то")
 
         if (apiResponse.data.isEmpty()) {
             logger.info(apiResponse.error)
