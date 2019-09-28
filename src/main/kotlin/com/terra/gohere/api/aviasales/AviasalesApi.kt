@@ -60,4 +60,12 @@ class AviasalesApi (
         return response.body() ?: UserIATA("LED", "Saint-Petersburg")
     }
 
+    fun cityName(iata: String): String {
+        val response = api.cityData(
+                auth = token,
+                iata = iata
+        ).execute()
+        return response.body()?.get(0)?.name ?: "Saint-Petersburg"
+    }
+
 }
