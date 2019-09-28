@@ -47,7 +47,7 @@ class AviasalesApi (
         if (apiResponse.data.isEmpty()) {
             logger.info(apiResponse.error)
             throw ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "token = $token origin = $origin \n" + apiResponse.error)
+                    HttpStatus.BAD_REQUEST, "token = $token origin = $origin destination = $destination.\n" + apiResponse.error)
         }
         return apiResponse.data
     }
