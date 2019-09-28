@@ -34,6 +34,7 @@ class PlaceController (
                 "TYO",
                 100.0,
                 "https://youtu.be/6qGiXY1SB68",
+                "image",
                 28.0
         )
 

@@ -9,6 +9,7 @@ data class PlaceDto(
         val airport: String,
         var price: Double = 0.0,
         val video: String,
+        val image: String,
         var temperature: Double = 0.0
 ) {
     constructor(place: Place, price: Double, temperature: Double) : this(
@@ -18,6 +19,7 @@ data class PlaceDto(
             airport = place.airport,
             price = price,
             video = place.video,
+            image = place.image,
             temperature = temperature
     )
 }

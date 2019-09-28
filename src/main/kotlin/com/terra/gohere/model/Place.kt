@@ -11,6 +11,7 @@ data class Place(
         val description: String,
         val airport: String,
         val video: String,
+        val image: String,
         val category: String
 ) {
     constructor(placeSaveDto: PlaceSaveDto): this(
@@ -18,6 +19,7 @@ data class Place(
             description = placeSaveDto.description,
             airport = placeSaveDto.airport,
             video = placeSaveDto.video,
+            image = placeSaveDto.image,
             category = placeSaveDto.category
     )
 }

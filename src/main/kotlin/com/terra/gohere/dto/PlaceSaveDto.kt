@@ -7,5 +7,6 @@ data class PlaceSaveDto (
         val description: String,
         val airport: String,
         val video: String,
+        val image: String,
         val category: String
 )
