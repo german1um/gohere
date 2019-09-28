@@ -1,16 +1,15 @@
 package com.terra.gohere.api.aviasales
 
-import com.terra.gohere.api.aviasales.entity.PriceApiResponse
+import com.terra.gohere.api.aviasales.entity.CheapestPriceApiResponse
+import com.terra.gohere.api.aviasales.entity.LatestPriceApiResponse
 import com.terra.gohere.api.aviasales.entity.UserIATA
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.PropertySource
 import retrofit2.Call
 import retrofit2.http.*
 
 interface AviasalesApiService {
 
     @GET("v2/prices/latest")
-    fun prices(
+    fun latestPrices(
             @Header("X-Access-Token") auth: String,
             @Query("currency") currency: String = "usd",
             @Query("origin") origin: String = "LED",
@@ -21,7 +20,15 @@ interface AviasalesApiService {
             @Query("limit") limit: Int = 30,
             @Query("show_to_affiliates") showToAffiliates: Boolean = true,
             @Query("sorting") sorting: String = "price"
-            ): Call<PriceApiResponse>
+            ): Call<LatestPriceApiResponse>
+
+    @GET("v2/prices/latest")
+    fun cheapestPrices(
+            @Header("X-Access-Token") auth: String,
+            @Query("currency") currency: String = "usd",
+            @Query("origin") origin: String = "LED",
+            @Query("destination") destination: String = "TYO"
+    ): Call<CheapestPriceApiResponse>
 
     @GET("whereami")
     fun whereAmI(

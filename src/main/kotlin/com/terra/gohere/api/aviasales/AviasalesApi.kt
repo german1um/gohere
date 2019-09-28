@@ -35,8 +35,8 @@ class AviasalesApi (
         api = retrofit.create(AviasalesApiService::class.java)
     }
 
-    fun getPrices(origin: String, destination: String): List<Price> {
-        val response = api.prices(
+    fun getCheapestPrices(origin: String, destination: String): Collection<Price> {
+        val response = api.cheapestPrices(
                 auth = token,
                 origin = origin,
                 destination = destination
@@ -49,7 +49,7 @@ class AviasalesApi (
             throw ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "token = $token origin = $origin destination = $destination.\n" + apiResponse.error)
         }
-        return apiResponse.data
+        return apiResponse.data.values
     }
 
     fun whereAmI(ip: String): UserIATA {

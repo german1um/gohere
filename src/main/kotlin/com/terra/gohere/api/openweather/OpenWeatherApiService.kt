@@ -1,10 +1,8 @@
 package com.terra.gohere.api.openweather
 
-import com.terra.gohere.api.aviasales.entity.PriceApiResponse
 import com.terra.gohere.api.openweather.entity.WeatherApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface OpenWeatherApiService {

@@ -25,7 +25,7 @@ class PlaceService (
     }
 
     fun getPrice(origin: String, destination: String): Double{
-        return aviasalesApi.getPrices(origin, destination).first().value
+        return aviasalesApi.getCheapestPrices(origin, destination).minBy { it.value }!!.value
     }
 
     fun getAllPlaces(remoteAddr: String): List<Category> {
