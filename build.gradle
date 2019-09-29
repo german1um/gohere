@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    compile 'com.google.cloud:google-cloud-storage:1.82.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-logging'

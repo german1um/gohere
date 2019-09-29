@@ -32,3 +32,5 @@ out/
 .vscode/
 
 src/main/resources/token.properties
+src/main/resources/cdn.properties
+.gcs-credentials
