@@ -45,7 +45,7 @@ class PlaceController (
         )
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/seasons")
     fun patchSeasons(@PathVariable("id") id: String,
               @RequestParam bestSeasons: List<Month>
     ) {
