@@ -170,4 +170,8 @@ class PlaceService(
         placeRepository.deleteAll()
     }
 
+    fun clearCache() {
+        cachedDataRepository.deleteAll()
+    }
+
 }

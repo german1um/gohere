@@ -44,4 +44,9 @@ class PlaceController (
         )
     }
 
+    @PostMapping("/clearCache")
+    fun clearCache() {
+        placeService.clearCache()
+    }
+
 }
