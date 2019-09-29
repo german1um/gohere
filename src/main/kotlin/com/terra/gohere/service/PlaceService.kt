@@ -7,19 +7,24 @@ import com.terra.gohere.api.aviasales.entity.Flight
 import com.terra.gohere.api.openweather.OpenWeatherApi
 import com.terra.gohere.dto.Category
 import com.terra.gohere.dto.PlaceDto
+import com.terra.gohere.model.CachedData
 import com.terra.gohere.model.Place
+import com.terra.gohere.repository.CachedDataRepository
 import com.terra.gohere.repository.PlaceRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDate.now
+import java.time.LocalDateTime
 import java.time.Month
 
 @Service
 class PlaceService(
         @Autowired val placeRepository: PlaceRepository,
+        @Autowired val cachedDataRepository: CachedDataRepository,
         @Autowired val aviasalesApi: AviasalesApi,
         @Autowired val aviasalesLyssaApi: AviasalesLyssaApi,
         @Autowired val aviasalesAutocompleteApi: AviasalesAutocompleteApi,
@@ -56,6 +61,14 @@ class PlaceService(
         return LocalDate.of(targetYear, targetMonth, 1).toString()
     }
 
+    fun isCacheStale(timestamp: LocalDateTime): Boolean {
+        return Duration.between(LocalDateTime.now(), timestamp).toDays() > 1
+    }
+
+    fun getFlightCached(place: Place, remoteAddr: String): Flight {
+        return cachedDataRepository.findByPlaceId(place.id).flight
+    }
+
     fun getFlight(origin: String, destination: String, month: String): Flight {
         return aviasalesLyssaApi.getCheapestPricesForMonth(origin, destination, month)
                 .minBy { it.value } ?: throw ResponseStatusException(
@@ -64,9 +77,47 @@ class PlaceService(
         )
     }
 
+    fun updateCache(place: Place, remoteAddr: String): Place {
+        if (cachedDataRepository.existsByPlaceId(place.id)) {
+            val cachedData = cachedDataRepository.findByPlaceId(place.id)
+            if (isCacheStale(cachedData.timestamp)) {
+                val flight = getFlight(
+                        origin = getUserIATA(remoteAddr),
+                        destination = place.airport,
+                        month = getSoonestHotMonth(place.bestSeasons)
+                )
+                cachedDataRepository.save(
+                        CachedData(
+                                id = cachedData.id,
+                                placeId = cachedData.placeId,
+                                flight = flight,
+                                temperature = getWeatherByCity(place.airport),
+                                timestamp = LocalDateTime.now()
+                        )
+                )
+            }
+        } else {
+            val flight = getFlight(
+                    origin = getUserIATA(remoteAddr),
+                    destination = place.airport,
+                    month = getSoonestHotMonth(place.bestSeasons)
+            )
+            cachedDataRepository.save(
+                    CachedData(
+                            placeId = place.id,
+                            flight = flight,
+                            temperature = getWeatherByCity(place.airport),
+                            timestamp = LocalDateTime.now()
+                    )
+            )
+        }
+        return place
+    }
+
     fun getAllPlaces(remoteAddr: String): List<Category> {
-        val origin = getUserIATA(remoteAddr)
-        return placeRepository.findAll().groupBy {
+        return placeRepository.findAll().map {
+            updateCache(it, remoteAddr)
+        }.groupBy {
             it.category
         }.map {
             Category(
@@ -74,13 +125,18 @@ class PlaceService(
                     places = it.value.map { place ->
                         PlaceDto(
                                 place,
-                                getFlight(origin, place.airport, getSoonestHotMonth(place.bestSeasons)),
-                                getWeatherByCity(place.airport)
+                                getFlightCached(place, remoteAddr),
+                                getWeatherByCityCached(place)
                         )
                     }
             )
         }
     }
+
+    private fun getWeatherByCityCached(place: Place): Double {
+        return cachedDataRepository.findByPlaceId(place.id).temperature
+    }
+
 
     private fun getUserIATA(ip: String): String {
         return aviasalesApi.whereAmI(ip).iata
@@ -106,7 +162,7 @@ class PlaceService(
                         image = image,
                         category = place.category,
                         bestSeasons = place.bestSeasons
-                        )
+                )
         )
     }
 
