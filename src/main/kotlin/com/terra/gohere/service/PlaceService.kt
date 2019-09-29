@@ -166,6 +166,24 @@ class PlaceService(
         )
     }
 
+    fun patch(id: String, bestSeasons: List<Month>) {
+        val place: Place = placeRepository.findById(id).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND, "Place with such id not found")
+        }
+        placeRepository.save(
+                Place(
+                        id = place.id,
+                        name = place.name,
+                        description = place.description,
+                        airport = place.airport,
+                        video = place.video,
+                        image = place.image,
+                        category = place.category,
+                        bestSeasons = bestSeasons
+                )
+        )
+    }
+
     fun dropPlaces() {
         placeRepository.deleteAll()
     }

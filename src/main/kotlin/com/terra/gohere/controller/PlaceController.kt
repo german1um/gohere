@@ -6,6 +6,7 @@ import com.terra.gohere.model.Place
 import com.terra.gohere.service.PlaceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.time.Month
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -41,6 +42,15 @@ class PlaceController (
               ) {
         placeService.patch(
                 id, video, image
+        )
+    }
+
+    @PatchMapping("/{id}")
+    fun patchSeasons(@PathVariable("id") id: String,
+              @RequestParam bestSeasons: List<Month>
+    ) {
+        placeService.patch(
+                id, bestSeasons
         )
     }
 
