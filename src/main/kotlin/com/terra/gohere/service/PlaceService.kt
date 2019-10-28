@@ -12,6 +12,8 @@ import com.terra.gohere.model.Place
 import com.terra.gohere.repository.CachedDataRepository
 import com.terra.gohere.repository.PlaceRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.PropertySource
+import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -21,6 +23,7 @@ import java.time.LocalDate.now
 import java.time.LocalDateTime
 import java.time.Month
 
+@PropertySource("classpath:token.properties")
 @Service
 class PlaceService(
         @Autowired val placeRepository: PlaceRepository,
@@ -28,7 +31,8 @@ class PlaceService(
         @Autowired val aviasalesApi: AviasalesApi,
         @Autowired val aviasalesLyssaApi: AviasalesLyssaApi,
         @Autowired val aviasalesAutocompleteApi: AviasalesAutocompleteApi,
-        @Autowired val weatherApi: OpenWeatherApi
+        @Autowired val weatherApi: OpenWeatherApi,
+        @Autowired val env: Environment
 ) {
 
     fun getWeatherByCoordinates(lat: Double, lng: Double): Double {
@@ -123,9 +127,12 @@ class PlaceService(
             Category(
                     name = it.key,
                     places = it.value.map { place ->
+                        val flight = getFlightCached(place, remoteAddr)
                         PlaceDto(
                                 place,
-                                getFlightCached(place, remoteAddr),
+                                getFlightLink(flight),
+                                flight.depart_date,
+                                flight.value,
                                 getWeatherByCityCached(place)
                         )
                     }
@@ -190,6 +197,13 @@ class PlaceService(
 
     fun clearCache() {
         cachedDataRepository.deleteAll()
+    }
+
+    fun getFlightLink(flight: Flight): String {
+        val list = flight.depart_date.split('-')
+        val date = list[2] + list[1]
+        val referral = env.getProperty("aviasales_referral")?:""
+        return "https://www.aviasales.ru/search/${flight.origin}$date${flight.destination}1$referral"
     }
 
 }

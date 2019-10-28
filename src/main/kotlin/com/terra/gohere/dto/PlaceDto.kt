@@ -15,14 +15,14 @@ data class PlaceDto(
         val image: String,
         var temperature: Double = 0.0
 ) {
-    constructor(place: Place, flight: Flight, temperature: Double) : this(
+    constructor(place: Place, flightLink: String, date: String, price: Double, temperature: Double) : this(
             id = place.id,
             name = place.name,
             description = place.description,
             airport = place.airport,
-            flightLink = flight.toString(),
-            date = flight.depart_date,
-            price = flight.value,
+            flightLink = flightLink,
+            date = date,
+            price = price,
             video = place.video,
             image = place.image,
             temperature = temperature
